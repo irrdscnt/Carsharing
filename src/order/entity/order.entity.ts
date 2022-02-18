@@ -1,4 +1,4 @@
-import { Prop, Schema } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { IOrder } from "../interface/";
 
 @Schema()
@@ -36,3 +36,5 @@ export class OrderEntity implements IOrder{
 
 
 }
+
+export const OrderSchema=SchemaFactory.createForClass(OrderEntity);

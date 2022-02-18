@@ -1,6 +1,3 @@
-import { SchemaFactory } from "@nestjs/mongoose";
-import { OrderEntity } from "../entity";
-
 export interface IOrder{
     name:string,
     phone:string,
@@ -9,5 +6,3 @@ export interface IOrder{
     brand:string,
     totalPrice:number,
 }
-
-export const OrderSchema=SchemaFactory.createForClass(OrderEntity);
