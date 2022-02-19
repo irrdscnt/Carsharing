@@ -8,5 +8,3 @@ export interface IOrder {
   endDate: string;
   brand: string;
 }
-
-

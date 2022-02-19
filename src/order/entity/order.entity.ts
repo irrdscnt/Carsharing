@@ -28,6 +28,5 @@ export class OrderEntity implements IOrder {
     required: true,
   })
   brand: string;
-  
 }
 export const OrderSchema = SchemaFactory.createForClass(OrderEntity);

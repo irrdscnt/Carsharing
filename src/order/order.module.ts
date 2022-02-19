@@ -4,12 +4,11 @@ import { OrderController } from './order.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { OrderEntity, OrderSchema } from './entity';
 
-
 @Module({
-  imports:[
+  imports: [
     MongooseModule.forFeature([
-      {name:OrderEntity.name,schema:OrderSchema},
-    ])
+      { name: OrderEntity.name, schema: OrderSchema },
+    ]),
   ],
   providers: [OrderService],
   controllers: [OrderController],
