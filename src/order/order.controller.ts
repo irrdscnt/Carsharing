@@ -28,10 +28,10 @@ export class OrderController {
   async findAll() {
     return await this.service.findAll();
   }
-  @Get(':brand')
-  async findBrand(@Param('brand') brand: string) {
-    return await this.service.findBrand(brand);
-  }
+  // @Get(':brand')
+  // async findBrand(@Param('brand') brand: string) {
+  //   return await this.service.findBrand(brand);
+  // }
   @Get(':id')
   async findOne(@Param() params: FindOneOrderDto) {
     const { id } = params;

@@ -15,25 +15,19 @@ export class UpdateOrderDto {
 
   @ApiProperty({
     description: 'Rent date',
-    example: '28.12.2021',
+    example: '2022-02-19T13:21:13.012Z',
   })
-  startDate: string;
+  startDate: Date;
 
   @ApiProperty({
     description: 'Return date',
-    example: '29.12.2021',
+    example: '2022-02-19T13:21:13.012Z',
   })
-  endDate: string;
+  endDate: Date;
 
   @ApiProperty({
-    description: 'Car brand name',
-    example: 'BMW',
+    description: 'Car id',
+    example: 1,
   })
-  brand: string;
-
-  // @ApiProperty({
-  // 	description: 'Price for all rent days',
-  // 	example: '300',
-  // })
-  // totalPrice: number;
+  id: number;
 }

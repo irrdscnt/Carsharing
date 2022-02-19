@@ -14,19 +14,19 @@ export class OrderEntity implements IOrder {
   })
   phone: string;
   @Prop({
-    type: String,
+    type: Date,
     required: true,
   })
-  startDate: string;
+  startDate: Date;
   @Prop({
-    type: String,
+    type: Date,
     required: true,
   })
-  endDate: string;
+  endDate: Date;
   @Prop({
-    type: String,
+    type: Number,
     required: true,
   })
-  brand: string;
+  id: number;
 }
 export const OrderSchema = SchemaFactory.createForClass(OrderEntity);
