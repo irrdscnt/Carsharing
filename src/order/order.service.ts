@@ -1,4 +1,38 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { OrderEntity } from './entity';
+import {Model} from 'mongoose'
+import { CreateOrderDto } from './dto';
 
 @Injectable()
-export class OrderService {}
+export class OrderService {
+    constructor(
+        @InjectModel(OrderEntity.name)
+        private readonly entity:Model<OrderEntity>
+    ){}
+    async findAll() {
+        return await this.entity.find()
+      }
+
+    async findOne(id:string ){
+        const task=await this.entity.findById(id)
+        if (!task){
+            throw new NotFoundException()
+        }
+        return task
+    }
+    async create(dto:CreateOrderDto){
+        const {name,phone,startDate,endDate,brand}=dto
+        /* const exist =await this.entity.findOne({name,phone,startDate,endDate,brand})
+        console.log(exist)
+        if (exist){
+        throw new ConflictException()
+    } */
+        dto.name=name
+        dto.phone=phone
+        dto.startDate=startDate
+        dto.endDate=endDate
+        dto.brand=brand
+        return this.entity.create(dto)
+    }
+}

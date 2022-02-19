@@ -7,7 +7,6 @@ export interface IOrder {
   startDate: string;
   endDate: string;
   brand: string;
-  totalPrice: number;
 }
 
-export const OrderSchema = SchemaFactory.createForClass(OrderEntity);
+
