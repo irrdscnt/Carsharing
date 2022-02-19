@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { ApiConflictResponse, ApiCreatedResponse } from '@nestjs/swagger';
-import { CreateOrderDto, FindOneOrderDto } from './dto';
+import { Body, Controller, Get, Param, Post,Put,Delete } from '@nestjs/common';
+import { ApiConflictResponse, ApiCreatedResponse, ApiNotFoundResponse } from '@nestjs/swagger';
+import { CreateOrderDto, FindOneOrderDto, UpdateOrderDto } from './dto';
 import { OrderService } from './order.service';
 
 @Controller('order')
@@ -24,5 +24,19 @@ export class OrderController {
     async findOne(@Param() params:FindOneOrderDto) {
         const {id}=params
        return await this.service.findOne(id)
+    }
+    @Put(':id')
+    @ApiCreatedResponse({type:UpdateOrderDto})
+    @ApiNotFoundResponse()
+    async update(
+    @Param(){id}:FindOneOrderDto,
+    @Body() dto:UpdateOrderDto,) {
+    return await this.service.update(id,dto)
+    }
+
+    @Delete(':id')
+    @ApiNotFoundResponse({description:' already deleted'})
+    async delete(@Param() {id}:FindOneOrderDto){
+     return await this.service.delete(id)
     }
 }
