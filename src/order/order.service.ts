@@ -21,6 +21,10 @@ export class OrderService {
         }
         return task
     }
+    async findBrand(brand:string) {
+        const brandd= await this.entity.find({brand})
+        return brandd
+    }
     async create(dto:CreateOrderDto){
         const {name,phone,startDate,endDate,brand}=dto
         /* const exist =await this.entity.findOne({name,phone,startDate,endDate,brand})
