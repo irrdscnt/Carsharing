@@ -35,9 +35,14 @@ export class OrderService {
       },
     ];
   }
+
+
   async findAll() {
     return await this.entity.find();
   }
+async findCars(){
+  return this.DB
+}
 
   async findCarId(id: number): Promise<ICar> {
     const car = this.DB.find((car: ICar) => car.carId === id);
@@ -69,10 +74,10 @@ export class OrderService {
     const res = await this.entity.find({
       carId: id,
       endDate: {
-        $gt: new Date(start - 259200000),
+        $gt: new Date(start - (3*24*60*60*1000)),
       },
       startDate: {
-        $lt: new Date(end + 259200000),
+        $lt: new Date(end + (3*24*60*60*1000)),
       },
     });
     if (res.length !== 0) {
@@ -139,3 +144,4 @@ export class OrderService {
     await this.entity.deleteMany();
   }
 }
+ 
