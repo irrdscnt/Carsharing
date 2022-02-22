@@ -15,13 +15,13 @@ export class UpdateOrderDto {
 
   @ApiProperty({
     description: 'Rent date',
-    example: '2022-02-19T13:21:13.012Z',
+    example: '2022-02-22T10:30:40.000Z',
   })
   startDate: Date;
 
   @ApiProperty({
     description: 'Return date',
-    example: '2022-02-19T13:21:13.012Z',
+    example: '2022-02-22T10:30:40.000Z',
   })
   endDate: Date;
 

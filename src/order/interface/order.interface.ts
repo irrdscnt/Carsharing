@@ -4,4 +4,6 @@ export interface IOrder {
   startDate: Date;
   endDate: Date;
   id: number;
+  totalPrice: number;
+  // brand: string;
 }

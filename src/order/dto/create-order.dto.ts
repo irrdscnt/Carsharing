@@ -20,14 +20,14 @@ export class CreateOrderDto {
 
   @ApiProperty({
     description: 'Rent date',
-    example: '28.12.2021',
+    example: '2022-02-22T10:30:40.000Z',
   })
   @IsNotEmpty()
   startDate: Date;
 
   @ApiProperty({
     description: 'Return date',
-    example: '29.12.2021',
+    example: '2022-02-22T10:30:40.000Z',
   })
   @IsNotEmpty()
   endDate: Date;
@@ -39,9 +39,11 @@ export class CreateOrderDto {
   @IsNotEmpty()
   id: number;
 
-  // @ApiProperty({
-  // 	description: 'Price for all rent days',
-  // 	example: '300',
-  // })
-  // totalPrice: number;
+  // @ApiHideProperty()
+  // brand?: string;
+  @ApiProperty({
+    description: 'Price for all rent days',
+    example: '300',
+  })
+  totalPrice: number;
 }

@@ -18,25 +18,26 @@ import { OrderService } from './order.service';
 @Controller('order')
 export class OrderController {
   constructor(private readonly service: OrderService) {}
+  @Get()
+  async findAll() {
+    return await this.service.findAll();
+  }
+  @Get(':id')
+  async findOne(@Param() params: FindOneOrderDto) {
+    const { id } = params;
+    return await this.service.findOne(id);
+  }
+  @Get(':brand')
+  async findBrand(@Param('brand') brand: string) {
+    return await this.service.findBrand(brand);
+  }
   @Post()
   @ApiCreatedResponse({ type: CreateOrderDto })
   @ApiConflictResponse({ description: 'Url already exist' })
   async create(@Body() dto: CreateOrderDto) {
     return await this.service.create(dto);
   }
-  @Get()
-  async findAll() {
-    return await this.service.findAll();
-  }
-  // @Get(':brand')
-  // async findBrand(@Param('brand') brand: string) {
-  //   return await this.service.findBrand(brand);
-  // }
-  @Get(':id')
-  async findOne(@Param() params: FindOneOrderDto) {
-    const { id } = params;
-    return await this.service.findOne(id);
-  }
+
   @Put(':id')
   @ApiCreatedResponse({ type: UpdateOrderDto })
   @ApiNotFoundResponse()
@@ -48,5 +49,10 @@ export class OrderController {
   @ApiNotFoundResponse({ description: ' already deleted' })
   async delete(@Param() { id }: FindOneOrderDto) {
     return await this.service.delete(id);
+  }
+  @Delete()
+  @ApiNotFoundResponse({ description: ' already deleted' })
+  async deleteAll() {
+    return await this.service.deleteAll();
   }
 }

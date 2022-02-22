@@ -28,5 +28,16 @@ export class OrderEntity implements IOrder {
     required: true,
   })
   id: number;
+
+  // @Prop({
+  //   type: String,
+  //   required: true,
+  // })
+  // brand: string;
+  @Prop({
+    type: Number,
+    required: true,
+  })
+  totalPrice: number;
 }
 export const OrderSchema = SchemaFactory.createForClass(OrderEntity);
