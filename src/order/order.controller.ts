@@ -42,7 +42,7 @@ export class OrderController {
   @ApiCreatedResponse({ type: UpdateOrderDto })
   @ApiNotFoundResponse()
   async update(@Param() { id }: FindOneOrderDto, @Body() dto: UpdateOrderDto) {
-    return await this.service.update(id, dto);
+    return await this.service.update(id,dto);
   }
 
   @Delete(':id')

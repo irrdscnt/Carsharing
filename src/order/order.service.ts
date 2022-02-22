@@ -120,17 +120,21 @@ export class OrderService {
   async update(id: string, dto: UpdateOrderDto) {
     
     let { carId, startDate, endDate } = dto;
-    startDate = new Date(startDate);
-    endDate = new Date(endDate);
+   
     const updateDto = await this.entity.findById(id);
-    await this.checkDate(carId, startDate, endDate);
-    const car = this.DB.find((car) => car.carId == carId);
-    updateDto.carId=car.carId;
-    updateDto.brand = car.brand;
-    updateDto.totalPrice = car.price * await this.daysCount(startDate, endDate);
+  
+    if (startDate | endDate | carId){
+      const car = this.DB.find((car) => car.carId == carId);
+      startDate = new Date(startDate);
+      endDate = new Date(endDate);
+      await this.checkDate(carId, startDate, endDate);
+      updateDto.carId=car.carId;
+      updateDto.brand = car.brand;
+      updateDto.totalPrice = car.price * await this.daysCount(startDate, endDate);
+    }
     Object.assign(updateDto, dto);
     return await updateDto.save();
-  }
+  } //вставить условие if(передается startDate,endDate)то делать проверку
   async delete(id: string) {
     await this.findOne(id);
     await this.entity.findByIdAndDelete(id);

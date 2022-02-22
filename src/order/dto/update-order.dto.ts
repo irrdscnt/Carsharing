@@ -1,43 +1,43 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UpdateOrderDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Client name',
     example: 'John',
   })
   name: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Phone number',
     example: '+996500123456',
   })
   phone: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Rent date',
     example: '2022-02-22T10:30:40.000Z',
   })
-  startDate: Date;
+  startDate?: Date;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Return date',
     example: '2022-02-22T10:30:40.000Z',
   })
-  endDate: Date;
+  endDate?: Date;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Car id',
     example: 1,
   })
-  carId: number;
+  carId?: number;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Brand',
     example: 'BMW',
   })
   brand: string;
-  
-  @ApiProperty({
+
+  @ApiPropertyOptional({
     description: 'Price for all rent days',
     example: '300',
   })
