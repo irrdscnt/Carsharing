@@ -27,13 +27,14 @@ export class OrderEntity implements IOrder {
     type: Number,
     required: true,
   })
-  id: number;
+  carId: number;
 
-  // @Prop({
-  //   type: String,
-  //   required: true,
-  // })
-  // brand: string;
+  @Prop({
+    type: String,
+    required: false,
+  })
+  brand: string;
+  
   @Prop({
     type: Number,
     required: true,

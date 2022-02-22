@@ -19,17 +19,17 @@ export class OrderService {
   ) {
     this.DB = [
       {
-        id: 1,
+        carId: 1,
         brand: 'BMW 530',
         price: 100,
       },
       {
-        id: 2,
+        carId: 2,
         brand: 'Toyota Camry',
         price: 80,
       },
       {
-        id: 3,
+        carId: 3,
         brand: 'Ford Focus',
         price: 50,
       },
@@ -40,7 +40,7 @@ export class OrderService {
   }
 
   async findCarId(id: number): Promise<ICar> {
-    const car = this.DB.find((car: ICar) => car.id === id);
+    const car = this.DB.find((car: ICar) => car.carId === id);
     if (!car) {
       throw new NotFoundException();
     }
@@ -52,10 +52,10 @@ export class OrderService {
     if (!car) {
       throw new NotFoundException();
     }
-    const carId = car.id;
+    const carId = car.carId;
     const orders = await this.entity.find();
     const cars = orders.filter((order) => {
-      order.id = carId;
+      order.carId = carId;
     });
     return cars;
   }
@@ -67,7 +67,7 @@ export class OrderService {
       throw new BadRequestException(400, 'Weekend day not RENT');
     }
     const res = await this.entity.find({
-      id: id,
+      carId: id,
       endDate: {
         $gt: new Date(start - 259200000),
       },
@@ -86,37 +86,48 @@ export class OrderService {
     }
     return exist;
   }
+  async daysCount(start, end) {
+    const res = end - start;
+    const days = res / 1000 / 60 / 60 / 24;
+    return days;
+  }
   async create(dto: CreateOrderDto) {
-    const { name, phone, id } = dto;
+    const { name, phone, carId } = dto;
     let { startDate, endDate } = dto;
     startDate = new Date(startDate);
     endDate = new Date(endDate);
 
-    const exist = this.DB.find((car) => car.id == id);
+    const exist = this.DB.find((car) => car.carId == carId);
     if (!exist) {
       throw new ConflictException();
     }
-    await this.checkDate(id, startDate, endDate);
-    function daysCount(start, end) {
-      const res = end - start;
-      const days = res / 1000 / 60 / 60 / 24;
-      return days;
-    }
-    const car = this.DB.find((car) => car.id == id);
+    await this.checkDate(carId, startDate, endDate);
+
+    const car = this.DB.find((car) => car.carId == carId);
 
     dto.name = name;
     dto.phone = phone;
     dto.startDate = startDate;
     dto.endDate = new Date(endDate);
-    dto.id = id;
-    dto.totalPrice = car.price * daysCount(startDate, endDate);
+    dto.carId = carId;
+    dto.totalPrice = car.price * await this.daysCount(startDate, endDate);
+    dto.brand = car.brand;
     // const car = this.DB.find((car: ICar) => car.id === dto.id);
     // dto.brand = car.brand;
     // console.log(car);
     return this.entity.create(dto);
   }
   async update(id: string, dto: UpdateOrderDto) {
+    
+    let { carId, startDate, endDate } = dto;
+    startDate = new Date(startDate);
+    endDate = new Date(endDate);
     const updateDto = await this.entity.findById(id);
+    await this.checkDate(carId, startDate, endDate);
+    const car = this.DB.find((car) => car.carId == carId);
+    updateDto.carId=car.carId;
+    updateDto.brand = car.brand;
+    updateDto.totalPrice = car.price * await this.daysCount(startDate, endDate);
     Object.assign(updateDto, dto);
     return await updateDto.save();
   }

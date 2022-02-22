@@ -29,5 +29,17 @@ export class UpdateOrderDto {
     description: 'Car id',
     example: 1,
   })
-  id: number;
+  carId: number;
+
+  @ApiProperty({
+    description: 'Brand',
+    example: 'BMW',
+  })
+  brand: string;
+  
+  @ApiProperty({
+    description: 'Price for all rent days',
+    example: '300',
+  })
+  totalPrice: number;
 }

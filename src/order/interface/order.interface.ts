@@ -3,7 +3,7 @@ export interface IOrder {
   phone: string;
   startDate: Date;
   endDate: Date;
-  id: number;
+  carId: number;
   totalPrice: number;
-  // brand: string;
+  brand: string;
 }

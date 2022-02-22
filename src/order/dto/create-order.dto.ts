@@ -1,4 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger';
+import {
+ 
+  ApiProperty,
+  ApiPropertyOptional,
+} from '@nestjs/swagger';
 import { IsNotEmpty, Length } from 'class-validator';
 
 export class CreateOrderDto {
@@ -37,10 +41,15 @@ export class CreateOrderDto {
     example: '1',
   })
   @IsNotEmpty()
-  id: number;
+  carId: number;
 
-  // @ApiHideProperty()
-  // brand?: string;
+  //@ApiHideProperty()
+  @ApiPropertyOptional({
+    description: 'Brand',
+    example: 'BMW',
+  })
+  brand?: string;
+
   @ApiProperty({
     description: 'Price for all rent days',
     example: '300',
