@@ -75,9 +75,7 @@ export class OrderService {
         $lt: new Date(end + 259200000),
       },
     });
-    if (res.length !== 0) {
-      throw new BadRequestException(400, 'Cant RENT');
-    }
+    return res;
   }
   async findOne(id: string) {
     const exist = await this.entity.findById(id);
@@ -87,53 +85,67 @@ export class OrderService {
     return exist;
   }
   async daysCount(start, end) {
+    start = new Date(start);
+    end = new Date(end);
     const res = end - start;
     const days = res / 1000 / 60 / 60 / 24;
     return days;
   }
   async create(dto: CreateOrderDto) {
     const { name, phone, carId } = dto;
-    let { startDate, endDate } = dto;
-    startDate = new Date(startDate);
-    endDate = new Date(endDate);
+    const { startDate, endDate } = dto;
+    // startDate = new Date(startDate);
+    // endDate = new Date(endDate);
 
     const exist = this.DB.find((car) => car.carId == carId);
     if (!exist) {
       throw new ConflictException();
     }
-    await this.checkDate(carId, startDate, endDate);
-
+    const res = await this.checkDate(carId, startDate, endDate);
+    if (res.length !== 0) {
+      throw new BadRequestException(400, 'Cant RENT');
+    }
     const car = this.DB.find((car) => car.carId == carId);
 
     dto.name = name;
     dto.phone = phone;
     dto.startDate = startDate;
-    dto.endDate = new Date(endDate);
+    dto.endDate = endDate;
     dto.carId = carId;
-    dto.totalPrice = car.price * await this.daysCount(startDate, endDate);
+    dto.totalPrice = car.price * (await this.daysCount(startDate, endDate));
     dto.brand = car.brand;
-    // const car = this.DB.find((car: ICar) => car.id === dto.id);
-    // dto.brand = car.brand;
-    // console.log(car);
     return this.entity.create(dto);
   }
   async update(id: string, dto: UpdateOrderDto) {
-    
-    let { carId, startDate, endDate } = dto;
-   
+    const { startDate, endDate } = dto;
+    const { carId } = dto;
     const updateDto = await this.entity.findById(id);
-    if (/* startDate | endDate | */ carId){
-      const car = this.DB.find((car) => car.carId == carId);
-      startDate = new Date(startDate);
-      endDate = new Date(endDate);
-      await this.checkDate(carId, startDate, endDate);
-      updateDto.carId=car.carId;
-      updateDto.brand = car.brand;
-      updateDto.totalPrice = car.price * await this.daysCount(startDate, endDate);
+    let car = this.DB.find((car) => car.carId == carId);
+    if (!car) {
+      car = this.DB.find((car) => car.carId == updateDto.carId);
     }
+    if (carId) {
+      updateDto.carId = carId;
+      updateDto.brand = car.brand;
+      updateDto.totalPrice =
+        car.price *
+        (await this.daysCount(
+          startDate || updateDto.startDate,
+          endDate || updateDto.endDate,
+        ));
+    }
+    if (startDate && endDate) {
+      const res = await this.checkDate(carId, startDate, endDate);
+      if (res.length !== 0) {
+        throw new BadRequestException(400, 'Cant RENT');
+      }
+      updateDto.startDate = startDate;
+      updateDto.endDate = endDate;
+    }
+    console.log(startDate, endDate);
     Object.assign(updateDto, dto);
     return await updateDto.save();
-  } //вставить условие if(передается startDate,endDate)то делать проверку
+  }
   async delete(id: string) {
     await this.findOne(id);
     await this.entity.findByIdAndDelete(id);

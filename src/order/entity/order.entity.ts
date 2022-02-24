@@ -13,15 +13,15 @@ export class OrderEntity implements IOrder {
     required: true,
   })
   phone: string;
-  /* @Prop({
+  @Prop({
     type: Date,
     required: true,
-  }) */
+  })
   startDate: Date;
-  /* @Prop({
+  @Prop({
     type: Date,
     required: true,
-  }) */
+  })
   endDate: Date;
   @Prop({
     type: Number,
@@ -34,7 +34,7 @@ export class OrderEntity implements IOrder {
     required: false,
   })
   brand: string;
-  
+
   @Prop({
     type: Number,
     required: true,

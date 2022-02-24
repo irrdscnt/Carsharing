@@ -1,17 +1,17 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UpdateOrderDto {
   @ApiPropertyOptional({
     description: 'Client name',
     example: 'John',
   })
-  name: string;
+  name?: string;
 
   @ApiPropertyOptional({
     description: 'Phone number',
     example: '+996500123456',
   })
-  phone: string;
+  phone?: string;
 
   @ApiPropertyOptional({
     description: 'Rent date',
@@ -35,11 +35,11 @@ export class UpdateOrderDto {
     description: 'Brand',
     example: 'BMW',
   })
-  brand: string;
+  brand?: string;
 
   @ApiPropertyOptional({
     description: 'Price for all rent days',
     example: '300',
   })
-  totalPrice: number;
+  totalPrice?: number;
 }
