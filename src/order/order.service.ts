@@ -122,8 +122,7 @@ export class OrderService {
     let { carId, startDate, endDate } = dto;
    
     const updateDto = await this.entity.findById(id);
-  
-    if (startDate | endDate | carId){
+    if (/* startDate | endDate | */ carId){
       const car = this.DB.find((car) => car.carId == carId);
       startDate = new Date(startDate);
       endDate = new Date(endDate);
