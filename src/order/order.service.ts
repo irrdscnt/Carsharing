@@ -36,13 +36,12 @@ export class OrderService {
     ];
   }
 
-
   async findAll() {
     return await this.entity.find();
   }
-async findCars(){
-  return this.DB
-}
+  async findCars() {
+    return this.DB;
+  }
 
   async findCarId(id: number): Promise<ICar> {
     const car = this.DB.find((car: ICar) => car.carId === id);
@@ -52,18 +51,18 @@ async findCars(){
     return car;
   }
 
-  async findBrand(brand: string) {
-    const car = this.DB.find((car: ICar) => car.brand === brand);
-    if (!car) {
-      throw new NotFoundException();
-    }
-    const carId = car.carId;
-    const orders = await this.entity.find();
-    const cars = orders.filter((order) => {
-      order.carId = carId;
-    });
-    return cars;
-  }
+  // async findBrand(brand: string) {
+  //   const car = this.DB.find((car: ICar) => car.brand === brand);
+  //   if (!car) {
+  //     throw new NotFoundException();
+  //   }
+  //   const carId = car.carId;
+  //   const orders = await this.entity.find((car) => car.brand == brand);
+  //   const cars = orders.filter((order) => {
+  //     order.carId = carId;
+  //   });
+  //   return cars;
+  // }
   async checkDate(id: number, start: any, end: any) {
     start = new Date(start);
     end = new Date(end);
@@ -74,10 +73,10 @@ async findCars(){
     const res = await this.entity.find({
       carId: id,
       endDate: {
-        $gt: new Date(start - (3*24*60*60*1000)),
+        $gt: new Date(start - 259200000),
       },
       startDate: {
-        $lt: new Date(end + (3*24*60*60*1000)),
+        $lt: new Date(end + 259200000),
       },
     });
     return res;
@@ -99,8 +98,6 @@ async findCars(){
   async create(dto: CreateOrderDto) {
     const { name, phone, carId } = dto;
     const { startDate, endDate } = dto;
-    // startDate = new Date(startDate);
-    // endDate = new Date(endDate);
 
     const exist = this.DB.find((car) => car.carId == carId);
     if (!exist) {
@@ -146,8 +143,13 @@ async findCars(){
       }
       updateDto.startDate = startDate;
       updateDto.endDate = endDate;
+      updateDto.totalPrice =
+        car.price *
+        (await this.daysCount(
+          startDate || updateDto.startDate,
+          endDate || updateDto.endDate,
+        ));
     }
-    console.log(startDate, endDate);
     Object.assign(updateDto, dto);
     return await updateDto.save();
   }
@@ -159,4 +161,3 @@ async findCars(){
     await this.entity.deleteMany();
   }
 }
- 

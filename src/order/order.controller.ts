@@ -23,7 +23,7 @@ export class OrderController {
     return await this.service.findAll();
   }
   @Get(':cars')
-  async findCars(){
+  async findCars() {
     return await this.service.findCars();
   }
   @Get(':id')
@@ -31,10 +31,10 @@ export class OrderController {
     const { id } = params;
     return await this.service.findOne(id);
   }
-  @Get(':brand')
-  async findBrand(@Param('brand') brand: string) {
-    return await this.service.findBrand(brand);
-  }
+  // @Get(':brand')
+  // async findBrand(@Param('brand') brand: string) {
+  //   return await this.service.findBrand(brand);
+  // }
   @Post()
   @ApiCreatedResponse({ type: CreateOrderDto })
   @ApiConflictResponse({ description: 'Url already exist' })

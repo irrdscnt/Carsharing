@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsPhoneNumber, Length } from 'class-validator';
+import { IsNotEmpty, Length } from 'class-validator';
 
 export class CreateOrderDto {
   @ApiProperty({
